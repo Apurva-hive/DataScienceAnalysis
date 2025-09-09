@@ -61,3 +61,37 @@ plt.xlabel('Behavioral Context (Habit)')
 plt.ylabel('Time to Food (seconds)')
 plt.xticks(rotation=45)
 plt.show()
+
+# Correlation heatmap (visualising the matrix)
+print("\n[My Contribution] Correlation heatmap (visualising the correlation matrix).")
+plt.figure(figsize=(6,5))
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', vmin=-1, vmax=1, square=True)
+plt.title('Correlation Heatmap (key variables)')
+plt.tight_layout()
+plt.show()
+
+# Regression plot: rat arrival delay vs time to food
+print("\n[My Contribution] Relationship between rat arrival delay and time to food (with linear fit).")
+mask = df[['seconds_after_rat_arrival','bat_landing_to_food']].dropna()
+if not mask.empty:
+    ax = sns.regplot(
+        x='seconds_after_rat_arrival',
+        y='bat_landing_to_food',
+        data=mask,
+        scatter_kws={'alpha':0.6},
+        line_kws={'linewidth':2}
+    )
+    plt.title('Rat arrival delay vs Time to food')
+    plt.xlabel('Seconds after rat arrival')
+    plt.ylabel('Time to food (seconds)')
+    plt.tight_layout()
+    plt.show()
+
+    # Print simple linear regression stats
+    slope, intercept, r, p, se = stats.linregress(
+        mask['seconds_after_rat_arrival'],
+        mask['bat_landing_to_food']
+    )
+    print(f"Linear fit: slope = {slope:.3f}, r = {r:.2f}, p = {p:.4f}")
+else:
+    print("Not enough non-missing data to draw the regression plot.")
