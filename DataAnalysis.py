@@ -3,7 +3,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 
-# Load the dataset
+# =========================
+# Data loading & preparation
+# =========================
+# Load the dataset of bat landing events (Objective 1). Each row ~ one landing
 df = pd.read_csv("dataset1.csv")
 
 # Convert relevant columns to datetime
@@ -15,7 +18,14 @@ df['sunset_time'] = pd.to_datetime(df['sunset_time'], format='%d/%m/%Y %H:%M')
 # Handle missing values in 'habit' by filling with 'unknown'
 df['habit'].fillna('unknown', inplace=True)
 
-# Correlation analysis: calculate Pearson correlation between key variables
+# =========================
+# Core statistics (Objective 1)
+# =========================
+# Pearson correlations among key variables:
+# - bat_landing_to_food: time (s) from landing to reaching food
+# - seconds_after_rat_arrival: rat timing context
+# - risk: 0=avoid, 1=risk-taking
+# - reward: 0=no success, 1=success
 correlation_matrix = df[['bat_landing_to_food', 'seconds_after_rat_arrival', 'risk', 'reward']].corr()
 
 # T-test: Compare 'bat_landing_to_food' for risk-taking (risk=1) vs risk-avoidance (risk=0)
